@@ -6,11 +6,11 @@ class Api::NewsController < Api::ApplicationController
 
 	def category
 		categorised_news = []
-		provider_ids = Provider.where(category: params[:category].ids
-		provider_ids.each do |provider_id|
-			feeds = News.where(provider_id: provider_id)
+		providers = Provider.where(category: params[:category])
+		providers.each do |provider|
+			feeds = News.where(provider_id: provider.id)
 			categorised_news.append(feeds)
 		end
-		render json: categorised_news
+		render json: categorised_news.flatten
 	end
 end
