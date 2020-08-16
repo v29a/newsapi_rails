@@ -10,13 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_11_103942) do
+ActiveRecord::Schema.define(version: 2020_08_14_065825) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "news", force: :cascade do |t|
-    t.string "category"
     t.string "summary"
     t.datetime "published_on"
     t.string "title"
@@ -24,11 +23,14 @@ ActiveRecord::Schema.define(version: 2020_08_11_103942) do
     t.string "image_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "provider_id"
+    t.index ["provider_id"], name: "index_news_on_provider_id"
   end
 
   create_table "providers", force: :cascade do |t|
     t.string "provider_url"
-    t.integer "provider_name"
+    t.string "provider_name"
+    t.string "category"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

@@ -1,3 +1,4 @@
 class Provider < ApplicationRecord
-	enum provider_name: [ "NDTV", "India Today", "Zee News", "Times of India", "News 18", "The Hindu", "India TV", "BBC News" ]
+	has_many :news
+	validates :provider_url, uniqueness: true
 end

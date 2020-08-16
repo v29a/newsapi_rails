@@ -1,9 +1,9 @@
 class CreateNewsUrls < ActiveRecord::Migration[6.0]
   def change
     create_table :providers do |t|
-      t.string :provider_url
-      t.integer :provider_name
-
+      t.string :provider_url, unique: true
+      t.string :provider_name
+      t.string :category
       t.timestamps
     end
   end

@@ -8,9 +8,11 @@ class ProviderDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
+    news: Field::HasMany,
     id: Field::Number,
     provider_url: Field::String,
-    provider_name: Field::Select.with_options(searchable: false, collection: ->(field) { field.resource.class.send(field.attribute.to_s.pluralize).keys }),
+    provider_name: Field::String,
+    category: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -21,18 +23,21 @@ class ProviderDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
+  news
   id
   provider_url
   provider_name
-  created_at
+  category
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
+  news
   id
   provider_url
   provider_name
+  category
   created_at
   updated_at
   ].freeze
@@ -43,6 +48,7 @@ class ProviderDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
   provider_url
   provider_name
+  category
   ].freeze
 
   # COLLECTION_FILTERS
@@ -60,7 +66,7 @@ class ProviderDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how providers are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(provider)
-  #   "Provider ##{provider.id}"
-  # end
+  def display_resource(provider)
+    "#{provider.category}"
+  end
 end
