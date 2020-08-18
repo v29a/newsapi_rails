@@ -14,7 +14,7 @@ class FetchNewsWorker
 					News.create(title: feed.title, summary: summary,published_on: feed.published, url: feed.url, image_url: image_url, provider_id: provider.id)
 				elsif provider.provider_url.include?("indiatvnews" )
 					index_of_summary = feed.summary.index("</a>")
-					summary = feed.summary[index_of_summary..].delete_prefix("</a> ")
+					summary = feed.summary[index_of_summary+4..]
 					index_of_image = feed.summary.index("src")
 					image_url = feed.summary[(index_of_image+5)..(index_of_summary-4)]
 					News.create(title: feed.title, summary: summary,published_on: feed.published, url: feed.url, image_url: image_url, provider_id: provider.id)		
