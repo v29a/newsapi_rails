@@ -22,7 +22,7 @@ class FetchNewsWorker
 					index_of_image = feed.summary.index("https")
 					summary_index = feed.summary.index(" />")
 					image_url = feed.summary[(index_of_image)..(summary_index-2)]
-					summary = feed.summary[(summary_index+2)..]
+					summary = feed.summary[(summary_index+3)..]
 					News.create(title: feed.title, summary: summary,published_on: feed.published, url: feed.url, image_url: image_url, provider_id: provider.id)
 				else
 					News.create(title: feed.title, summary: feed.summary, 
