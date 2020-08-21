@@ -35,38 +35,88 @@ module Admin
                     summary = feed["description"][(summary_index+3)..]
                     News.create(title: feed["title"], summary: summary,published_on: feed["pubDate"], url: feed["link"], image_url: image_url, provider_id: provider.id)
                     provider.update(news_updated_at: Time.now.localtime)
+
+                elsif provider.provider_url.include?("bbc")
+                    News.create(title: feed["title"], summary: feed["description"], 
+                    published_on: feed["pubDate"], url: feed["link"], image_url: feed["fullimage"], 
+                    provider_id: provider.id)
+                    provider.update(news_updated_at: Time.now.localtime)
+
+
+                elsif provider.provider_url.include?("ndtv")
+                    News.create(title: feed["title"], summary: feed["description"], 
+                    published_on: feed["updatedAt"], url: feed["link"], image_url: feed["fullimage"], 
+                    provider_id: provider.id)
+                    provider.update(news_updated_at: Time.now.localtime)
+
                     
-                else
+                elsif provider.provider_url.include?("timesofindia")
                     News.create(title: feed["title"], summary: feed["description"], 
                     published_on: feed["pubdate"], url: feed["link"], image_url: feed["fullimage"], 
                     provider_id: provider.id)
+                    provider.update(news_updated_at: Time.now.localtime)
+
 
                 end
             end
-            provider.update(news_updated_at: Time.now.localtime)
+            redirect_to admin_providers_path, alert: "Fetched Successfully "
         end
 
-        if provider.provider_url.include?("indiatvnews" )
-            xml = HTTParty.get(provider.provider_url)
-            ProviderContent.create(xml: xml, provider_id: provider.id)
+        unless provider.provider_url.include?("timesofindia" ) || provider.provider_url.include?("ndtv" ) || provider.provider_url.include?("bbc" ) ||
+            provider.provider_url.include?("news18") || provider.provider_url.include?("indiatoday") 
 
-            xml = xml.body
-            feeds = Feedjira.parse(xml)
-            feeds.entries.each do |feed|
-                index_of_summary = feed.summary.index("</a>")
-                summary = feed.summary[index_of_summary+4..]
-                index_of_image = feed.summary.index("src")
-                image_url = feed.summary[(index_of_image+5)..(index_of_summary-5)]
-                News.create(title: feed.title, summary: summary, 
-                published_on: feed.published, url: feed.url, image_url: image_url, 
-                provider_id: provider.id)
 
+            if provider.provider_url.include?("indiatvnews" )
+                xml = HTTParty.get(provider.provider_url)
+                ProviderContent.create(xml: xml, provider_id: provider.id)
+
+                xml = xml.body
+                feeds = Feedjira.parse(xml)
+                feeds.entries.each do |feed|
+                    index_of_summary = feed.summary.index("</a>")
+                    summary = feed.summary[index_of_summary+4..]
+                    index_of_image = feed.summary.index("src")
+                    image_url = feed.summary[(index_of_image+5)..(index_of_summary-5)]
+                    News.create(title: feed.title, summary: summary, 
+                    published_on: feed.published, url: feed.url, image_url: image_url, 
+                    provider_id: provider.id)
+
+                end
+                provider.update(news_updated_at: Time.now.localtime)
+
+            elsif provider.provider_url.include?("thehindu")
+                xml = HTTParty.get(provider.provider_url)
+                ProviderContent.create(xml: xml, provider_id: provider.id)
+                xml = xml.body
+                feeds = Feedjira.parse(xml)
+                feeds.entries.each do |feed|
+                    News.create(title: feed.title, summary: feed.summary.strip, 
+                    published_on: feed.published, url: feed.url,provider_id: provider.id)
+
+                end
+                provider.update(news_updated_at: Time.now.localtime)
+
+            elsif provider.provider_url.include?("zee")
+                xml = HTTParty.get(provider.provider_url)
+                ProviderContent.create(xml: xml, provider_id: provider.id)
+                xml = xml.body
+                feeds = Feedjira.parse(xml)
+                feeds.entries.each do |feed|
+                    News.create(title: feed.title, summary: feed.summary.strip, 
+                    published_on: feed.published, url: feed.url,provider_id: provider.id)
+
+                end
+                provider.update(news_updated_at: Time.now.localtime)
             end
-            provider.update(news_updated_at: Time.now.localtime)
+            redirect_to admin_providers_path, alert: "Fetched Successfully "
 
         end
 
-        if provider.provider_url.include?("thehindu")
+        unless provider.provider_url.include?("timesofindia" ) || provider.provider_url.include?("ndtv" ) || provider.provider_url.include?("bbc" ) ||
+            provider.provider_url.include?("news18") || provider.provider_url.include?("indiatoday") ||
+                provider.provider_url.include?("indiatvnews") || provider.provider_url.include?("thehindu") ||
+                    provider.provider_url.include?("zee")
+
             xml = HTTParty.get(provider.provider_url)
             ProviderContent.create(xml: xml, provider_id: provider.id)
             xml = xml.body
@@ -77,21 +127,9 @@ module Admin
 
             end
             provider.update(news_updated_at: Time.now.localtime)
-        end
+            redirect_to admin_providers_path, alert: "Fetched Successfully "
 
-        if provider.provider_url.include?("zee")
-            xml = HTTParty.get(provider.provider_url)
-            ProviderContent.create(xml: xml, provider_id: provider.id)
-            xml = xml.body
-            feeds = Feedjira.parse(xml)
-            feeds.entries.each do |feed|
-                News.create(title: feed.title, summary: feed.summary.strip, 
-                published_on: feed.published, url: feed.url,provider_id: provider.id)
-
-            end
-            provider.update(news_updated_at: Time.now.localtime)
         end
-        redirect_to admin_providers_path, alert: "Fetched Successfully"
 
     end
 
