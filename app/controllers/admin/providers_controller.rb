@@ -24,6 +24,7 @@ module Admin
                     News.create(title: feed["title"], summary: summary, 
                     published_on: feed["pubDate"], url: feed["link"], image_url: image_url, 
                     provider_id: provider.id)
+                    provider.update(news_updated_at: Time.now.localtime)
 
                         
                 elsif provider.provider_url.include?("news18")
@@ -33,6 +34,7 @@ module Admin
                     image_url = feed["description"][(index_of_image)..(last_index_of_image)] + "pg"
                     summary = feed["description"][(summary_index+3)..]
                     News.create(title: feed["title"], summary: summary,published_on: feed["pubDate"], url: feed["link"], image_url: image_url, provider_id: provider.id)
+                    provider.update(news_updated_at: Time.now.localtime)
                     
                 else
                     News.create(title: feed["title"], summary: feed["description"], 
@@ -89,7 +91,7 @@ module Admin
             end
             provider.update(news_updated_at: Time.now.localtime)
         end
-        redirect_to admin_providers_path, notice: "Fetched Successfully"
+        redirect_to admin_providers_path, alert: "Fetched Successfully"
 
     end
 

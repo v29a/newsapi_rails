@@ -17,6 +17,7 @@ class FetchNewsWorker
 						News.create(title: feed["title"], summary: summary, 
 						published_on: feed["pubDate"], url: feed["link"], image_url: image_url, 
 						provider_id: provider.id)
+						provider.update(news_updated_at: Time.now.localtime)
 
 							
 					elsif provider.provider_url.include?("news18")
@@ -26,6 +27,7 @@ class FetchNewsWorker
 						image_url = feed["description"][(index_of_image)..(last_index_of_image)] + "pg"
 						summary = feed["description"][(summary_index+3)..]
 						News.create(title: feed["title"], summary: summary,published_on: feed["pubDate"], url: feed["link"], image_url: image_url, provider_id: provider.id)
+						provider.update(news_updated_at: Time.now.localtime)
 						
 					else
 						News.create(title: feed["title"], summary: feed["description"], 
@@ -34,6 +36,7 @@ class FetchNewsWorker
 
 					end
 				end
+				provider.update(news_updated_at: Time.now.localtime)
 			end
 
 			if provider.provider_url.include?("indiatvnews" )
@@ -52,6 +55,7 @@ class FetchNewsWorker
 					provider_id: provider.id)
 
 				end
+				provider.update(news_updated_at: Time.now.localtime)
 
 			end
 
@@ -65,6 +69,7 @@ class FetchNewsWorker
 					published_on: feed.published, url: feed.url,provider_id: provider.id)
 
 				end
+				provider.update(news_updated_at: Time.now.localtime)
 			end	
 			if provider.provider_url.include?("zee")
 				xml = HTTParty.get(provider.provider_url)
@@ -76,9 +81,9 @@ class FetchNewsWorker
 					published_on: feed.published, url: feed.url,provider_id: provider.id)
 
 				end
-				
+				provider.update(news_updated_at: Time.now.localtime)
 			end	
-			provider.update(news_updated_at: Time.now.localtime)
+
 		end
   	end	
 end
