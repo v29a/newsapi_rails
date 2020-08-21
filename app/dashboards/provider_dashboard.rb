@@ -10,9 +10,11 @@ class ProviderDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     news: Field::HasMany,
     id: Field::Number,
-    provider_url: Field::String,
+    provider_url: Field::String.with_options(
+      truncate: 100),
     provider_name: Field::String,
     category: Field::String,
+    news_updated_at: Field::DateTime,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -23,11 +25,12 @@ class ProviderDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-  news
   id
   provider_url
   provider_name
   category
+  news_updated_at
+  news
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -46,9 +49,9 @@ class ProviderDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
+  category
   provider_url
   provider_name
-  category
   ].freeze
 
   # COLLECTION_FILTERS

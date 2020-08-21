@@ -1,4 +1,4 @@
-`<%#
+<%#
 # Collection
 
 This partial is used on the `index` and `show` pages
@@ -54,7 +54,7 @@ to display a collection of resources in an HTML table.
 
   <tbody>
     <% resources.each do |resource| %>
-      <tr
+      <tr class="js-table-row"
           <% if show_action? :show, resource %>
             <%= %(tabindex=0 role=link data-url=#{polymorphic_path([namespace, resource])}) %>
           <% end %>
@@ -63,15 +63,29 @@ to display a collection of resources in an HTML table.
           <td class="cell-data cell-data--<%= attribute.html_class %>">
             <% if show_action? :show, resource -%>
               <a href="<%= polymorphic_path([namespace, resource]) -%>"
+                 tabindex="-1"
                  class="action-show"
                  >
                 <%= render_field attribute %>
-              
+              </a>
             <% else %>
               <%= render_field attribute %>
             <% end -%>
           </td>
+
         <% end %>
+
+          <% if valid_action? :fetch_data %>
+            <% if resources.class.to_s == "Provider::ActiveRecord_Relation" %>
+              <td>
+                <%= link_to(
+                  "Fetch",fetch_data_admin_providers_path(resource),
+                  method: :post,
+                  class: "action-edit",
+                  data: {confirm: t('fetch')}) %>
+              </td>
+            <% end %>
+          <% end %>
 
         <% if valid_action? :edit, collection_presenter.resource_name %>
           <td><%= link_to(
@@ -80,6 +94,9 @@ to display a collection of resources in an HTML table.
             class: "action-edit",
           ) if show_action? :edit, resource%></td>
         <% end %>
+        
+
+          
 
         <% if valid_action? :destroy, collection_presenter.resource_name %>
           <td><%= link_to(

@@ -8,11 +8,13 @@ class NewsDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    provider: Field::BelongsTo.with_options(searchable: true, searchable_fields: ['category']),
+    provider: Field::BelongsTo,
     id: Field::Number,
-    summary: Field::String,
+    summary: Field::String.with_options(
+      truncate: 600),
     published_on: Field::DateTime,
-    title: Field::String,
+    title: Field::String.with_options(
+      truncate: 100),
     url: Field::String,
     image_url: Field::String,
     created_at: Field::DateTime,
@@ -27,24 +29,21 @@ class NewsDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
   id
   title
-  summary
-  provider
-  image_url
   published_on
+  provider
+
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-  provider
   id
+  title
   summary
   published_on
-  title
-  url
   image_url
-  created_at
-  updated_at
+  url
+  provider
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -74,7 +73,7 @@ class NewsDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how news are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(news)
-  #   "News ##{news.id}"
-  # end
+  def display_resource(news)
+    "News ##{news.id}"
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_14_065825) do
+ActiveRecord::Schema.define(version: 2020_08_20_051200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,10 +27,19 @@ ActiveRecord::Schema.define(version: 2020_08_14_065825) do
     t.index ["provider_id"], name: "index_news_on_provider_id"
   end
 
+  create_table "provider_contents", force: :cascade do |t|
+    t.string "xml"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "provider_id"
+    t.index ["provider_id"], name: "index_provider_contents_on_provider_id"
+  end
+
   create_table "providers", force: :cascade do |t|
     t.string "provider_url"
     t.string "provider_name"
     t.string "category"
+    t.datetime "news_updated_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

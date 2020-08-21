@@ -3,7 +3,11 @@ Rails.application.routes.draw do
 
   namespace :admin do
       resources :news
-      resources :providers
+      resources :providers do
+      collection do
+          post 'fetch_data'
+        end
+      end
 
       root to: "news#index"
     end

@@ -29,6 +29,8 @@ gem 'pry'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'sidekiq'
 gem 'feedjira'
+gem 'rss', '~> 0.2.8'
+gem 'simple-rss', '~> 1.3', '>= 1.3.1'
 gem 'httparty'
 gem 'administrate'
 gem 'rack-cors'
