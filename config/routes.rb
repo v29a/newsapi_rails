@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   namespace :api do
   	resources :news do 
   		collection do
-  			get 'category'
+  			post 'category'
   		end
   	end
   	
