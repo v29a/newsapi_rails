@@ -2,7 +2,7 @@ class Api::NewsController < Api::ApplicationController
 	def index
 		news = News.all
 		if news.present?
-			render json: news.flatten, status: :ok
+			render json: news, status: :ok
 		else
 			render json: "Try again", status: 404
 		end
