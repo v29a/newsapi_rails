@@ -51,8 +51,14 @@ module Admin
 
                     
                 elsif provider.provider_url.include?("timesofindia")
-                    News.create(title: feed["title"], summary: feed["description"], 
-                    published_on: feed["pubDate"], url: feed["link"], image_url: feed["fullimage"], 
+                    binding.pry
+                    index_of_image = feed["description"].index("src")
+                    last_index_of_image = feed["description"][index_of_image..].index("/>")+index_of_image
+                    image_url = feed["description"][(index_of_image+5)..(last_index_of_image-3)]
+                    summary_index = feed["description"].index("</a>")
+                    summary = feed["description"][(summary_index+4)..]
+                    News.create(title: feed["title"], summary: summary, 
+                    published_on: feed["pubDate"], url: feed["link"], image_url: image_url, 
                     provider_id: provider.id)
                     provider.update(news_updated_at: Time.now.localtime)
 
