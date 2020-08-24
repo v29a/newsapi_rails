@@ -52,7 +52,7 @@ module Admin
                     
                 elsif provider.provider_url.include?("timesofindia")
                     News.create(title: feed["title"], summary: feed["description"], 
-                    published_on: feed["pubdate"], url: feed["link"], image_url: feed["fullimage"], 
+                    published_on: feed["pubDate"], url: feed["link"], image_url: feed["fullimage"], 
                     provider_id: provider.id)
                     provider.update(news_updated_at: Time.now.localtime)
 
