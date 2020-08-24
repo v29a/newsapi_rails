@@ -51,18 +51,22 @@ module Admin
 
                     
                 elsif provider.provider_url.include?("timesofindia")
-                    binding.pry
-                    index_of_image = feed["description"].index("src")
-                    last_index_of_image = feed["description"][index_of_image..].index("/>")+index_of_image
-                    image_url = feed["description"][(index_of_image+5)..(last_index_of_image-3)]
-                    summary_index = feed["description"].index("</a>")
-                    summary = feed["description"][(summary_index+4)..]
-                    News.create(title: feed["title"], summary: summary, 
-                    published_on: feed["pubDate"], url: feed["link"], image_url: image_url, 
-                    provider_id: provider.id)
-                    provider.update(news_updated_at: Time.now.localtime)
-
-
+                    if provider.category == "Sports"
+                        index_of_image = feed["description"].index("src")
+                        last_index_of_image = feed["description"][index_of_image..].index("/>")+index_of_image
+                        image_url = feed["description"][(index_of_image+5)..(last_index_of_image-3)]
+                        summary_index = feed["description"].index("</a>")
+                        summary = feed["description"][(summary_index+4)..]
+                        News.create(title: feed["title"], summary: summary, 
+                        published_on: feed["pubDate"], url: feed["link"], image_url: image_url, 
+                        provider_id: provider.id)
+                        provider.update(news_updated_at: Time.now.localtime)
+                    else
+                        News.create(title: feed["title"], summary: feed["description"], 
+                        published_on: feed["pubDate"], url: feed["link"], image_url: feed:"", 
+                        provider_id: provider.id)
+                        provider.update(news_updated_at: Time.now.localtime)
+                    end
                 end
             end
             redirect_to admin_providers_path, alert: "Fetched Successfully "
