@@ -10,6 +10,11 @@
   </head>
 
   <body>
+      <% if user_signed_in? %>
+        <%= link_to "Sign Out", destroy_user_session_path, class: "button button--alt", :method => :delete %>
+      <% else %>
+        <%= link_to "Sign In", user_session_path, class: "button button--alt", :method => :post %>
+      <% end %>
     <%= yield %>
   </body>
 </html>
