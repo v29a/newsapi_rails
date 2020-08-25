@@ -2,7 +2,7 @@ class Api::NewsController < Api::ApplicationController
 	def index
 		news = News.all
 		if news.present?
-			render json: news, status: :ok
+			render json: news.reverse, status: :ok
 		else
 			render json: "Try again", status: 404
 		end
@@ -16,7 +16,7 @@ class Api::NewsController < Api::ApplicationController
 			categorised_news.append(feeds)
 		end
 		if categorised_news.present?
-			render json: categorised_news.flatten, status: :ok
+			render json: categorised_news.flatten.reverse, status: :ok
 		else
 			render json: "Try again with different categories", status: 404
 		end

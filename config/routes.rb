@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
 
-  devise_for :users, controllers: {
-        sessions: 'users/sessions'
-      }
+  devise_for :users, controllers: { sessions: 'users/sessions' }
   namespace :admin do
       resources :news
       # resources :users
