@@ -10,7 +10,7 @@ class Api::NewsController < Api::ApplicationController
 
 	def category
 		categorised_news = []
-		providers = Provider.where(category: params[:category].capitalize)
+		providers = Provider.where(category: params[:category].capitalize).reverse
 		providers.each do |provider|
 			feeds = News.where(provider_id: provider.id)
 			categorised_news.append(feeds)
