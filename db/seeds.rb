@@ -15,3 +15,4 @@ Provider.create(provider_url: "https://www.news18.com/rss/india.xml", provider_n
 Provider.create(provider_url: "https://www.thehindu.com/news/national/feeder/default.rss", provider_name: "The Hindu News", category:"National")
 Provider.create(provider_url: "https://timesofindia.indiatimes.com/rssfeedstopstories.cms", provider_name: "Times of India News", category: "Top Stories")
 User.create(email: "admin@gmail.com", password:"123456", role:"admin")
+User.create(email: "super_admin@gmail.com", password:"123456", role:"super_admin")

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: 'users/sessions' }
   namespace :admin do
       resources :news
-      # resources :users
+      resources :users
       resources :providers do
       collection do
           post 'fetch_data'
