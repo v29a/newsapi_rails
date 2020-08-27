@@ -13,7 +13,7 @@ Provider.create(provider_url: "https://feeds.feedburner.com/ndtvnews-top-stories
 Provider.create(provider_url: "https://www.indiatoday.in/rss/home", provider_name: "India Today", category:"National")
 Provider.create(provider_url: "https://www.news18.com/rss/india.xml", provider_name: "News 18  News", category:"National")
 Provider.create(provider_url: "https://www.thehindu.com/news/national/feeder/default.rss", provider_name: "The Hindu News", category:"National")
-Provider.create(provider_url: "https://timesofindia.indiatimes.com/rssfeedstopstories.cms", provider_name: "Times of India News", category: "Top Stories")
+Provider.create(provider_url: "https://timesofindia.indiatimes.com/rssfeedstopstories.cms", provider_name: "Times of India", category: "Top Stories")
 
 Provider.create(provider_url: "https://www.indiatoday.in/rss/1206550", provider_name: "India Today", category: "Sport")
 Provider.create(provider_url: "https://timesofindia.indiatimes.com/rssfeeds/4719148.cms", provider_name: "Times of India", category: "Sport")
