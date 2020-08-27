@@ -1,8 +1,7 @@
 module Admin
-  class UsersController < Admin::ApplicationController
+  class RolesController < Admin::ApplicationController
     before_action :is_creator
     before_action :is_publisher
-    before_action :is_admin
     before_action :is_editor
     before_action :is_author
     # Overwrite any of the RESTful controller actions to implement custom behavior
@@ -47,6 +46,5 @@ module Admin
 
     # See https://administrate-prototype.herokuapp.com/customizing_controller_actions
     # for more information
-    
   end
 end

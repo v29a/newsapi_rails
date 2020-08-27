@@ -51,7 +51,6 @@ to display a collection of resources in an HTML table.
           <th scope="col"></th>
         <% end %>
       <% end %>
-
     </tr>
   </thead>
 
@@ -75,21 +74,9 @@ to display a collection of resources in an HTML table.
               <%= render_field attribute %>
             <% end -%>
           </td>
-
         <% end %>
 
-          <% if valid_action? :fetch_data %>
-            <% if resources.class.to_s == "Provider::ActiveRecord_Relation" %>
-              <td>
-                <%= link_to(
-                  "Fetch",fetch_data_admin_providers_path(resource),
-                  method: :post,
-                  class: "action-edit",
-                  data: {confirm: t('fetch')}) %>
-              </td>
-            <% end %>
-          <% end %>
-        <% unless current_user.role.role_name == "Creator"%>
+        <% if current_user.role.role_name == "Editor" %>
           <% if valid_action? :edit, collection_presenter.resource_name %>
             <td><%= link_to(
               t("administrate.actions.edit"),
@@ -97,9 +84,34 @@ to display a collection of resources in an HTML table.
               class: "action-edit",
             ) if show_action? :edit, resource%></td>
           <% end %>
-          
 
-            
+          <% if valid_action? :destroy, collection_presenter.resource_name %>
+            <td><%= link_to(
+              t("administrate.actions.destroy"),
+              [namespace, resource],
+              class: "text-color-red",
+              method: :delete,
+              data: { confirm: t("administrate.actions.confirm") }
+            ) if show_action? :destroy, resource %></td>
+          <% end %>
+
+        <% elsif current_user.role.role_name == "Creator" %>
+          <% if valid_action? :edit, collection_presenter.resource_name %>
+            <td></td>
+          <% end %>
+
+          <% if valid_action? :destroy, collection_presenter.resource_name %>
+            <td></td>
+          <% end %>
+
+        <% else %>
+          <% if valid_action? :edit, collection_presenter.resource_name %>
+            <td><%= link_to(
+              t("administrate.actions.edit"),
+              [:edit, namespace, resource],
+              class: "action-edit",
+            ) if show_action? :edit, resource%></td>
+          <% end %>
 
           <% if valid_action? :destroy, collection_presenter.resource_name %>
             <td><%= link_to(

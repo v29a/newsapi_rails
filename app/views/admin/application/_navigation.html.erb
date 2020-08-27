@@ -12,21 +12,53 @@ as defined by the routes in the `admin/` namespace
 
   <%= link_to(t("administrate.navigation.back_to_app"), root_url, class: "button button--alt") if defined?(root_url) %>
   <% Administrate::Namespace.new(namespace).resources_with_index_route.each do |resource| %>
-	  <% if current_user.role == "super_admin" %>
+	  <% if current_user.role.role_name == "Super Admin" %>
 	    <%= link_to(
 	      display_resource_name(resource),
 	      resource_index_route(resource),
 	      class: "navigation__link navigation__link--#{nav_link_state(resource)}"
 	    ) if valid_action?(:index, resource) && show_action?(:index, model_from_resource(resource)) %>
-    <% end %>
-    <% if current_user.role == "admin" %>
+    <% elsif current_user.role.role_name == "Admin" %>
     	<% if resource != "users"%>
 		    <%= link_to(
 		      display_resource_name(resource),
 		      resource_index_route(resource),
 		      class: "navigation__link navigation__link--#{nav_link_state(resource)}"
 		    ) if valid_action?(:index, resource) && show_action?(:index, model_from_resource(resource)) %>
-	    	<% end %>
+	    <% end %>
+    <% elsif current_user.role.role_name == "Publisher" %>
+		<% if resource != "roles" && resource != "users"%>
+		    <%= link_to(
+		      	display_resource_name(resource),
+		      	resource_index_route(resource),
+		      	class: "navigation__link navigation__link--#{nav_link_state(resource)}"
+		    	) if valid_action?(:index, resource) && show_action?(:index, model_from_resource(resource)) %>
+    	<% end %>
+	<% elsif current_user.role.role_name == "Creator" %>
+		<% if resource != "roles" && resource != "users"%>
+		    <%= link_to(
+		      	display_resource_name(resource),
+		      	resource_index_route(resource),
+		      	class: "navigation__link navigation__link--#{nav_link_state(resource)}"
+		    	) if valid_action?(:index, resource) && show_action?(:index, model_from_resource(resource)) %>
+    	<% end %>
+	<% elsif current_user.role.role_name == "Author" %>
+		<% if resource == "news" %>
+		    <%= link_to(
+		      	display_resource_name(resource),
+		      	resource_index_route(resource),
+		      	class: "navigation__link navigation__link--#{nav_link_state(resource)}"
+		    	) if valid_action?(:index, resource) && show_action?(:index, model_from_resource(resource)) %>
+		<% end %>
+
+    <% elsif current_user.role.role_name == "Editor" %>
+		<% if resource == "news"%>
+		    <%= link_to(
+		      	display_resource_name(resource),
+		      	resource_index_route(resource),
+		      	class: "navigation__link navigation__link--#{nav_link_state(resource)}"
+		    	) if valid_action?(:index, resource) && show_action?(:index, model_from_resource(resource)) %>
+    	<% end %>
     <% end %>
   <% end %>
 </nav>

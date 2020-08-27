@@ -45,51 +45,36 @@ to display a collection of resources in an HTML table.
           <% end %>
         </th>
       <% end %>
-      <% unless current_user.role.role_name == "Creator"%>
-        <% [valid_action?(:edit, collection_presenter.resource_name),
-            valid_action?(:destroy, collection_presenter.resource_name)].count(true).times do %>
-          <th scope="col"></th>
-        <% end %>
+      <% [valid_action?(:edit, collection_presenter.resource_name),
+          valid_action?(:destroy, collection_presenter.resource_name)].count(true).times do %>
+        <th scope="col"></th>
       <% end %>
-
     </tr>
   </thead>
 
   <tbody>
     <% resources.each do |resource| %>
-      <tr class="js-table-row"
-          <% if show_action? :show, resource %>
-            <%= %(tabindex=0 role=link data-url=#{polymorphic_path([namespace, resource])}) %>
-          <% end %>
-          >
-        <% collection_presenter.attributes_for(resource).each do |attribute| %>
-          <td class="cell-data cell-data--<%= attribute.html_class %>">
-            <% if show_action? :show, resource -%>
-              <a href="<%= polymorphic_path([namespace, resource]) -%>"
-                 tabindex="-1"
-                 class="action-show"
-                 >
-                <%= render_field attribute %>
-              </a>
-            <% else %>
-              <%= render_field attribute %>
-            <% end -%>
-          </td>
-
-        <% end %>
-
-          <% if valid_action? :fetch_data %>
-            <% if resources.class.to_s == "Provider::ActiveRecord_Relation" %>
-              <td>
-                <%= link_to(
-                  "Fetch",fetch_data_admin_providers_path(resource),
-                  method: :post,
-                  class: "action-edit",
-                  data: {confirm: t('fetch')}) %>
-              </td>
+      <% if resource.role.role_name != "Super Admin"%>
+        <tr class="js-table-row"
+            <% if show_action? :show, resource %>
+              <%= %(tabindex=0 role=link data-url=#{polymorphic_path([namespace, resource])}) %>
             <% end %>
+            >
+          <% collection_presenter.attributes_for(resource).each do |attribute| %>
+            <td class="cell-data cell-data--<%= attribute.html_class %>">
+              <% if show_action? :show, resource -%>
+                <a href="<%= polymorphic_path([namespace, resource]) -%>"
+                   tabindex="-1"
+                   class="action-show"
+                   >
+                  <%= render_field attribute %>
+                </a>
+              <% else %>
+                <%= render_field attribute %>
+              <% end -%>
+            </td>
           <% end %>
-        <% unless current_user.role.role_name == "Creator"%>
+
           <% if valid_action? :edit, collection_presenter.resource_name %>
             <td><%= link_to(
               t("administrate.actions.edit"),
@@ -97,9 +82,6 @@ to display a collection of resources in an HTML table.
               class: "action-edit",
             ) if show_action? :edit, resource%></td>
           <% end %>
-          
-
-            
 
           <% if valid_action? :destroy, collection_presenter.resource_name %>
             <td><%= link_to(
@@ -110,8 +92,8 @@ to display a collection of resources in an HTML table.
               data: { confirm: t("administrate.actions.confirm") }
             ) if show_action? :destroy, resource %></td>
           <% end %>
-        <% end %>
-      </tr>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

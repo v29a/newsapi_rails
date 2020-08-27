@@ -14,5 +14,17 @@ Provider.create(provider_url: "https://www.indiatoday.in/rss/home", provider_nam
 Provider.create(provider_url: "https://www.news18.com/rss/india.xml", provider_name: "News 18  News", category:"National")
 Provider.create(provider_url: "https://www.thehindu.com/news/national/feeder/default.rss", provider_name: "The Hindu News", category:"National")
 Provider.create(provider_url: "https://timesofindia.indiatimes.com/rssfeedstopstories.cms", provider_name: "Times of India News", category: "Top Stories")
-User.create(email: "admin@gmail.com", password:"123456", role:"admin")
-User.create(email: "super_admin@gmail.com", password:"123456", role:"super_admin")
+
+Provider.create(provider_url: "https://www.indiatoday.in/rss/1206550", provider_name: "India Today", category: "Sport")
+Provider.create(provider_url: "https://timesofindia.indiatimes.com/rssfeeds/4719148.cms", provider_name: "https://timesofindia.indiatimes.com/rssfeeds/4719148.cms", category: "Top Stories")
+
+Role.create(role_name: "Admin", role_description:"It has the all access except creating/updating and deleting a user and assigning role to any user")
+Role.create(role_name: "Super Admin", role_description:"It has the all access like creating/updating and deleting a user and assigning role to any user")
+Role.create(role_name: "Publisher", role_description:"It has the access to fetch news from Provider URL and can read, write, delete and update the provider url and news")
+Role.create(role_name: "Creator", role_description:"It has the access to fetch news from Provider URL and can read the provider url and news")
+Role.create(role_name: "Author", role_description:"It has the access to read, creating, updating and deleting the news")
+Role.create(role_name: "Editor", role_description:"It has the access to read the news")
+
+User.create(email: "admin@gmail.com", password:"123456", role_id: 1)
+User.create(email: "super_admin@gmail.com", password:"123456", role_id: 2)
+User.create(email: "publisher@gmail.com", password:"123456", role_id: 3)

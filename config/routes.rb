@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   namespace :admin do
       resources :news
       resources :users
+      resources :roles
       resources :providers do
       collection do
           post 'fetch_data'
