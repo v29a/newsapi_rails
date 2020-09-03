@@ -11,7 +11,6 @@ class RssProviderDashboard < Administrate::BaseDashboard
     news: Field::HasMany,
     provider: Field::BelongsTo,
     category: Field::BelongsTo,
-    provider_contents: Field::HasMany,
     id: Field::Number,
     rss_url: Field::String,
     news_updated_at: Field::DateTime,
@@ -29,6 +28,7 @@ class RssProviderDashboard < Administrate::BaseDashboard
   rss_url
   provider
   category
+  news
   news_updated_at
   ].freeze
 
@@ -39,8 +39,8 @@ class RssProviderDashboard < Administrate::BaseDashboard
   rss_url
   provider
   category
-  provider_contents
   news_updated_at
+  news
   created_at
   updated_at
   ].freeze
