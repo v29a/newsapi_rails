@@ -37,6 +37,8 @@ class ProviderDashboard < Administrate::BaseDashboard
   provider_name
   created_at
   updated_at
+  rss_providers
+  
   ].freeze
 
   # FORM_ATTRIBUTES
