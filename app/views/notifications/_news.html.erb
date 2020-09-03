@@ -1,0 +1,8 @@
+<div class="media-heading">
+	<br>
+  <%= link_to notification.actor.email, main_app.admin_user_path(notification.actor) %> just submitted a news .
+</div>
+
+<div class =''>
+	<%= link_to(notification.target.title, "/admin/news/#{notification.target.id}")%>
+</div>

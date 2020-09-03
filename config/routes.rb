@@ -1,16 +1,24 @@
 Rails.application.routes.draw do
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
+  mount ActionCable.server => '/cable'
+  mount Notifications::Engine => "/notifications"
+  
 
   devise_for :users, controllers: { sessions: 'users/sessions' }
   namespace :admin do
+
       resources :news
       resources :users
       resources :roles
-      resources :providers do
+      resources :categories
+      resources :providers
+      
+      resources :rss_providers do
       collection do
           post 'fetch_data'
         end
       end
-
       root to: "news#index"
     end
     root to: 'welcome#index'
@@ -23,6 +31,4 @@ Rails.application.routes.draw do
   	end
   	
   end
-  require 'sidekiq/web'
-	mount Sidekiq::Web => '/sidekiq'
 end

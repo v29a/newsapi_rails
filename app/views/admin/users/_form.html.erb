@@ -24,7 +24,6 @@ and renders all form fields for a resource's editable attributes.
           resource_name: display_resource_name(page.resource_name).singularize
         ) %>
       </h2>
-
       <ul>
         <% page.resource.errors.full_messages.each do |message| %>
           <li class="flash-error"><%= message %></li>

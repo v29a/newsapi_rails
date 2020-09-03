@@ -46,7 +46,6 @@ class RoleDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
   role_name
   role_description
-  users
   ].freeze
 
   # COLLECTION_FILTERS

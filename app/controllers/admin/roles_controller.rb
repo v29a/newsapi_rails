@@ -1,9 +1,6 @@
 module Admin
   class RolesController < Admin::ApplicationController
-    before_action :is_creator
-    before_action :is_publisher
-    before_action :is_editor
-    before_action :is_author
+
     # Overwrite any of the RESTful controller actions to implement custom behavior
     # For example, you may want to send an email after a foo is updated.
     #

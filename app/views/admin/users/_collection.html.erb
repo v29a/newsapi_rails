@@ -53,8 +53,10 @@ to display a collection of resources in an HTML table.
   </thead>
 
   <tbody>
-    <% resources.each do |resource| %>
-      <% if resource.role.role_name != "Super Admin"%>
+      
+    <%if current_user.role.role_name == "Super Admin"%>
+      <% resources.each do |resource| %>
+        <% next if resource.role.role_name == "Super Admin" %>
         <tr class="js-table-row"
             <% if show_action? :show, resource %>
               <%= %(tabindex=0 role=link data-url=#{polymorphic_path([namespace, resource])}) %>
@@ -94,6 +96,139 @@ to display a collection of resources in an HTML table.
           <% end %>
         </tr>
       <% end %>
+      <%elsif current_user.role.role_name == "Admin"%>
+      <% resources.each do |resource| %>
+        <% next if resource.role.role_name == "Super Admin" %>
+        <% next if resource.role.role_name == "Admin" %>
+        <tr class="js-table-row"
+            <% if show_action? :show, resource %>
+              <%= %(tabindex=0 role=link data-url=#{polymorphic_path([namespace, resource])}) %>
+            <% end %>
+            >
+          <% collection_presenter.attributes_for(resource).each do |attribute| %>
+            <td class="cell-data cell-data--<%= attribute.html_class %>">
+              <% if show_action? :show, resource -%>
+                <a href="<%= polymorphic_path([namespace, resource]) -%>"
+                   tabindex="-1"
+                   class="action-show"
+                   >
+                  <%= render_field attribute %>
+                </a>
+              <% else %>
+                <%= render_field attribute %>
+              <% end -%>
+            </td>
+          <% end %>
+
+          <% if valid_action? :edit, collection_presenter.resource_name %>
+            <td><%= link_to(
+              t("administrate.actions.edit"),
+              [:edit, namespace, resource],
+              class: "action-edit",
+            ) if show_action? :edit, resource%></td>
+          <% end %>
+
+          <% if valid_action? :destroy, collection_presenter.resource_name %>
+            <td><%= link_to(
+              t("administrate.actions.destroy"),
+              [namespace, resource],
+              class: "text-color-red",
+              method: :delete,
+              data: { confirm: t("administrate.actions.confirm") }
+            ) if show_action? :destroy, resource %></td>
+          <% end %>
+        </tr>
+      <% end %>
+      <%elsif current_user.role.role_name == "Publisher"%>
+      <% resources.each do |resource| %>
+        <% next if resource.role.role_name == "Super Admin" %>
+        <% next if resource.role.role_name == "Admin" %>
+        <% next if resource.role.role_name == "Publisher" %>
+        <tr class="js-table-row"
+            <% if show_action? :show, resource %>
+              <%= %(tabindex=0 role=link data-url=#{polymorphic_path([namespace, resource])}) %>
+            <% end %>
+            >
+          <% collection_presenter.attributes_for(resource).each do |attribute| %>
+            <td class="cell-data cell-data--<%= attribute.html_class %>">
+              <% if show_action? :show, resource -%>
+                <a href="<%= polymorphic_path([namespace, resource]) -%>"
+                   tabindex="-1"
+                   class="action-show"
+                   >
+                  <%= render_field attribute %>
+                </a>
+              <% else %>
+                <%= render_field attribute %>
+              <% end -%>
+            </td>
+          <% end %>
+
+          <% if valid_action? :edit, collection_presenter.resource_name %>
+            <td><%= link_to(
+              t("administrate.actions.edit"),
+              [:edit, namespace, resource],
+              class: "action-edit",
+            ) if show_action? :edit, resource%></td>
+          <% end %>
+
+          <% if valid_action? :destroy, collection_presenter.resource_name %>
+            <td><%= link_to(
+              t("administrate.actions.destroy"),
+              [namespace, resource],
+              class: "text-color-red",
+              method: :delete,
+              data: { confirm: t("administrate.actions.confirm") }
+            ) if show_action? :destroy, resource %></td>
+          <% end %>
+        </tr>
+      <% end %>
+      <%elsif current_user.role.role_name == "Editor"%>
+      <% resources.each do |resource| %>
+        <% next if resource.role.role_name == "Super Admin" %>
+        <% next if resource.role.role_name == "Admin" %>
+        <% next if resource.role.role_name == "Publisher" %>
+        <% next if resource.role.role_name == "Editor" %>
+        <tr class="js-table-row"
+            <% if show_action? :show, resource %>
+              <%= %(tabindex=0 role=link data-url=#{polymorphic_path([namespace, resource])}) %>
+            <% end %>
+            >
+          <% collection_presenter.attributes_for(resource).each do |attribute| %>
+            <td class="cell-data cell-data--<%= attribute.html_class %>">
+              <% if show_action? :show, resource -%>
+                <a href="<%= polymorphic_path([namespace, resource]) -%>"
+                   tabindex="-1"
+                   class="action-show"
+                   >
+                  <%= render_field attribute %>
+                </a>
+              <% else %>
+                <%= render_field attribute %>
+              <% end -%>
+            </td>
+          <% end %>
+
+          <% if valid_action? :edit, collection_presenter.resource_name %>
+            <td><%= link_to(
+              t("administrate.actions.edit"),
+              [:edit, namespace, resource],
+              class: "action-edit",
+            ) if show_action? :edit, resource%></td>
+          <% end %>
+
+          <% if valid_action? :destroy, collection_presenter.resource_name %>
+            <td><%= link_to(
+              t("administrate.actions.destroy"),
+              [namespace, resource],
+              class: "text-color-red",
+              method: :delete,
+              data: { confirm: t("administrate.actions.confirm") }
+            ) if show_action? :destroy, resource %></td>
+          <% end %>
+        </tr>
+      <% end %>
+
     <% end %>
   </tbody>
 </table>

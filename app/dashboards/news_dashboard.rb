@@ -9,6 +9,8 @@ class NewsDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     provider: Field::BelongsTo,
+    category: Field::BelongsTo,
+    user: Field::BelongsTo,
     id: Field::Number,
     summary: Field::String.with_options(
       truncate: 600),
@@ -30,8 +32,8 @@ class NewsDashboard < Administrate::BaseDashboard
   id
   title
   published_on
+  category
   provider
-
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -40,22 +42,24 @@ class NewsDashboard < Administrate::BaseDashboard
   id
   title
   summary
+  category
+  provider
   published_on
   image_url
   url
-  provider
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-  provider
-  summary
-  published_on
   title
+  summary
   url
+  category
+  user        
   image_url
+  provider
   ].freeze
 
   # COLLECTION_FILTERS

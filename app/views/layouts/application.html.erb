@@ -5,24 +5,9 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
-
   <body>
-      <% if user_signed_in? %>
-        <div style="padding: 2%">
-          <%= link_to "Sign Out", destroy_user_session_path, class: "button button--alt", :method => :delete %>
-        </div>
-        <% if current_user.role.role_name == "Admin" || "Super Admin"%>
-        <h3>Hello admin</h3>
-        <div style="padding: 2%">
-          <%= link_to "Admin Dashboard", admin_root_path , class: "button" %>
-        </div>
-        <% end %>
-      <% else %>
-        <%= link_to "Sign In", user_session_path, class: "button button--alt", :method => :post %>
-      <% end %>
+      
     <%= yield %>
   </body>
 </html>

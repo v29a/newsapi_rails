@@ -9,12 +9,11 @@ class ProviderDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     news: Field::HasMany,
+    rss_providers: Field::HasMany,
+    categories: Field::HasMany,
     id: Field::Number,
-    provider_url: Field::String.with_options(
-      truncate: 100),
+    provider_url: Field::String,
     provider_name: Field::String,
-    category: Field::String,
-    news_updated_at: Field::DateTime,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -26,21 +25,16 @@ class ProviderDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
   id
-  provider_url
   provider_name
-  category
-  news_updated_at
-  news
+  provider_url
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-  news
   id
   provider_url
   provider_name
-  category
   created_at
   updated_at
   ].freeze
@@ -49,9 +43,8 @@ class ProviderDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-  category  
-  provider_url
   provider_name
+  provider_url
   ].freeze
 
   # COLLECTION_FILTERS
@@ -70,6 +63,6 @@ class ProviderDashboard < Administrate::BaseDashboard
   # across all pages of the admin dashboard.
   #
   def display_resource(provider)
-    "#{provider.category}"
+    "#{provider.provider_name}"
   end
 end

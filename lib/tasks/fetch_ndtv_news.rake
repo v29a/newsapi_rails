@@ -1,5 +1,5 @@
 desc "Fetch NDTV News Feed from NDTV News"
 task :fetch_ndtv_news => :environment do
-	provider_name = Provider.find_by("provider_url LIKE '%ndtvnews%'").provider_name
+	provider_name = RssProvider.find_by("rss_url LIKE '%ndtvnews%'").provider.provider_name
   FetchNewsWorker.perform_in(1.seconds, provider_name)
 end

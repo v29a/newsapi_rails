@@ -8,9 +8,13 @@ class UserDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    role: Field::BelongsTo,
+    role: Field::BelongsTo.with_options(
+      scope: -> { Role.all.offset(1)}),
+    news: Field::HasMany,
     id: Field::Number,
     email: Field::String,
+    first_name: Field::String,
+    last_name: Field::String,
     password: Field::String,
     reset_password_token: Field::String,
     reset_password_sent_at: Field::DateTime,
@@ -27,6 +31,8 @@ class UserDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
   id
   email
+  first_name
+  last_name
   role
   ].freeze
 
@@ -35,6 +41,8 @@ class UserDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = %i[
   id
   email
+  first_name
+  last_name
   role
   created_at
   updated_at
@@ -46,6 +54,8 @@ class UserDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
   email
   password
+  first_name
+  last_name
   role
   ].freeze
 
@@ -64,7 +74,7 @@ class UserDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how users are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(user)
-  #   "User ##{user.id}"
-  # end
+  def display_resource(user)
+    "User ##{user.id}"
+  end
 end

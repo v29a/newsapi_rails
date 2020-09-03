@@ -23,15 +23,21 @@ By default, it renders:
   </title>
   <%= render "stylesheet" %>
   <%= csrf_meta_tags %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+
+    <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/le-frog/jquery-ui.min.css' %>
+
 </head>
 <body>
   <%= render "icons" %>
 
   <div class="app-container">
     <%= render "navigation" -%>
-
-    <main class="main-content" role="main">
+<main class="main-content" role="main">
       <%= render "flashes" -%>
+      <%= link_to pluralize(Notification.unread_count(current_user), "Notification"), notifications_path, class: "button button--alt"%>
       <%= yield %>
     </main>
   </div>

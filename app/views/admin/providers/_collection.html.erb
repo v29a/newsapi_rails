@@ -82,7 +82,7 @@ to display a collection of resources in an HTML table.
             <% if resources.class.to_s == "Provider::ActiveRecord_Relation" %>
               <td>
                 <%= link_to(
-                  "Fetch",fetch_data_admin_providers_path(resource),
+                  "Fetch",fetch_data_admin_rss_providers_path(resource),
                   method: :post,
                   class: "action-edit",
                   data: {confirm: t('fetch')}) %>
