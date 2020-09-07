@@ -1,6 +1,6 @@
 class NewsSerializer < ActiveModel::Serializer
   attributes :id, :title, :summary, :published_on, :url, :media, :provider_name, :provider_url,
-  	:category
+  	:category, :media_credit
 
   private 
   def media
