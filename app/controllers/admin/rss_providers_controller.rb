@@ -19,60 +19,90 @@ module Admin
             feeds = xml["rss"]["channel"]["item"]
             feeds.each do |feed|
                 if rss_provider.rss_url.include?("indiatoday" )
+                    title = News.find_by(title: feed["title"])
+                    unless title.present?
 
-                    index_of_summary = feed["description"].index("</a>")
-                    summary = feed["description"][index_of_summary..].delete_prefix("</a> ")
-                    index_of_image = feed["description"].index("src")
-                    image_url = feed["description"][(index_of_image+5)..(index_of_summary-4)]
-                    News.create(title: feed["title"], summary: summary, 
-                    published_on: feed["pubDate"], url: feed["link"], image_url: image_url,
-                    rss_provider_id: rss_provider.id, category_id: rss_provider.category.id, provider_id: rss_provider.provider.id)
-                    rss_provider.update(news_updated_at: Time.now.localtime)
+
+                        index_of_summary = feed["description"].index("</a>")
+                        summary = feed["description"][index_of_summary..].delete_prefix("</a> ")
+                        index_of_image = feed["description"].index("src")
+                        image_url = feed["description"][(index_of_image+5)..(index_of_summary-4)]
+                        News.create(title: feed["title"], summary: summary, 
+                        published_on: feed["pubDate"], url: feed["link"], media_url: image_url,
+                        rss_provider_id: rss_provider.id, category_id: rss_provider.category.id, 
+                        provider_id: rss_provider.provider.id, media_credit: rss_provider.provider.provider_name)
+                        rss_provider.update(news_updated_at: Time.now.localtime)
+
+                    end
 
                         
-                elsif rss_provider.url.include?("news18")
-                    index_of_image = feed["description"].index("https")
-                    summary_index = feed["description"].index(" />")
-                    last_index_of_image = feed["description"].index("jpg")
-                    image_url = feed["description"][(index_of_image)..(last_index_of_image)] + "pg"
-                    summary = feed["description"][(summary_index+3)..]
-                    News.create(title: feed["title"], summary: summary,published_on: feed["pubDate"], url: feed["link"], image_url: image_url, rss_provider_id: rss_provider.id, category_id: rss_provider.category.id, provider_id: rss_provider.provider.id)
-                    rss_provider.update(news_updated_at: Time.now.localtime)
+                elsif rss_provider.rss_url.include?("news18")
+                    title = News.find_by(title: feed["title"])
+                    unless title.present?
+                        index_of_image = feed["description"].index("https")
+                        summary_index = feed["description"].index(" />")
+                        last_index_of_image = feed["description"].index("jpg")
+                        image_url = feed["description"][(index_of_image)..(last_index_of_image)] + "pg"
+                        summary = feed["description"][(summary_index+3)..]
+                        News.create(title: feed["title"], summary: summary,published_on: feed["pubDate"], url: feed["link"], media_url: image_url, rss_provider_id: rss_provider.id, category_id: rss_provider.category.id, 
+                            provider_id: rss_provider.provider.id, media_credit: rss_provider.provider.provider_name)
+                        rss_provider.update(news_updated_at: Time.now.localtime)
+                    end
+
 
                 elsif rss_provider.rss_url.include?("bbc")
-                    News.create(title: feed["title"], summary: feed["description"], 
-                    published_on: feed["pubDate"], url: feed["link"], image_url: feed["fullimage"], 
-                    rss_provider_id: rss_provider.id, category_id: rss_provider.category.id, provider_id: rss_provider.provider.id)
-                    rss_provider.update(news_updated_at: Time.now.localtime)
+                    title = News.find_by(title: feed["title"])
+                    unless title.present?
+                        News.create(title: feed["title"], summary: feed["description"], 
+                        published_on: feed["pubDate"], url: feed["link"], media_url: feed["fullimage"], 
+                        rss_provider_id: rss_provider.id, category_id: rss_provider.category.id, 
+                        provider_id: rss_provider.provider.id, media_credit: rss_provider.provider.provider_name)
+                        rss_provider.update(news_updated_at: Time.now.localtime)
+                    end
 
 
                 elsif rss_provider.rss_url.include?("ndtv")
-                    News.create(title: feed["title"], summary: feed["description"], 
-                    published_on: feed["updatedAt"], url: feed["link"], image_url: feed["fullimage"], 
-                    rss_provider_id: rss_provider.id)
-                    rss_provider.update(news_updated_at: Time.now.localtime)
+                    title = News.find_by(title: feed["title"])
+                    unless title.present?
+                        News.create!(title: feed["title"], summary: feed["description"], 
+                        published_on: feed["updatedAt"], url: feed["link"], media_url: feed["fullimage"], 
+                        rss_provider_id: rss_provider.id, category_id: rss_provider.category.id,provider_id: rss_provider.provider.id, media_credit: rss_provider.provider.provider_name)
+                        rss_provider.update(news_updated_at: Time.now.localtime)
+                    end
+
 
                     
                 elsif rss_provider.rss_url.include?("timesofindia")
-                    if rss_provider.category == "Sports"
-                        index_of_image = feed["description"].index("src")
-                        last_index_of_image = feed["description"][index_of_image..].index("/>")+index_of_image
-                        image_url = feed["description"][(index_of_image+5)..(last_index_of_image-3)]
-                        summary_index = feed["description"].index("</a>")
-                        summary = feed["description"][(summary_index+4)..]
-                        News.create(title: feed["title"], summary: summary, 
-                        published_on: feed["pubDate"], url: feed["link"], image_url: image_url, 
-                        rss_provider_id: rss_provider.id, category_id: rss_provider.category.id, provider_id: rss_provider.provider.id)
-                        rss_provider.update(news_updated_at: Time.now.localtime)
-                    else
-                        News.create(title: feed["title"], summary: feed["description"], 
-                        published_on: feed["pubDate"], url: feed["link"], image_url: "", 
-                        rss_provider_id: rss_provider.id)
-                        rss_provider.update(news_updated_at: Time.now.localtime, category_id: rss_provider.category.id, provider_id: rss_provider.provider.id)
+                    title = News.find_by(title: feed["title"])
+
+                    unless title.present?
+
+                        if rss_provider.category.category_name == "Top Story" 
+                            News.create(title: feed["title"], summary: feed["description"], 
+                            published_on: feed["pubDate"], url: feed["link"], media_url: "", 
+                            rss_provider_id: rss_provider.id,category_id: rss_provider.category.id, 
+                                provider_id: rss_provider.provider.id, media_credit: rss_provider.provider.provider_name)
+                            rss_provider.update(news_updated_at: Time.now.localtime)                           
+                        else
+                            unless feed["description"] == nil 
+                                index_of_image = feed["description"].index("src")
+                                last_index_of_image = feed["description"][index_of_image..].index("/>")+index_of_image
+                                image_url = feed["description"][(index_of_image+5)..(last_index_of_image-3)]
+                                summary_index = feed["description"].index("</a>")
+                                summary = feed["description"][(summary_index+4)..]
+                                News.create(title: feed["title"], summary: summary, 
+                                published_on: feed["pubDate"], url: feed["link"], media_url: image_url, 
+                                rss_provider_id: rss_provider.id, category_id: rss_provider.category.id, 
+                                provider_id: rss_provider.provider.id, media_credit: rss_provider.provider.provider_name)
+                                rss_provider.update(news_updated_at: Time.now.localtime)
+                            end
+                        end
                     end
+                    
+
                 end
+
             end
-            redirect_to admin_rss_providers_path, alert: "Fetched Successfully "
         end
 
         unless rss_provider.rss_url.include?("timesofindia" ) || rss_provider.rss_url.include?("ndtv" ) || rss_provider.rss_url.include?("bbc" ) ||
@@ -90,9 +120,13 @@ module Admin
                     summary = feed.summary[index_of_summary+4..]
                     index_of_image = feed.summary.index("src")
                     image_url = feed.summary[(index_of_image+5)..(index_of_summary-5)]
-                    News.create(title: feed.title, summary: summary, 
-                    published_on: feed.published, url: feed.url, image_url: image_url, 
-                    rss_provider_id: rss_provider.id, category_id: rss_provider.category.id, provider_id: rss_provider.provider.id)
+                    title = News.find_by(title: feed.title)
+                    unless title.present?
+                        News.create(title: feed.title, summary: summary, 
+                        published_on: feed.published, url: feed.url, media_url: image_url, 
+                        rss_provider_id: rss_provider.id, category_id: rss_provider.category.id, 
+                        provider_id: rss_provider.provider.id, media_credit: rss_provider.provider.provider_name)
+                    end
 
                 end
                 rss_provider.update(news_updated_at: Time.now.localtime)
@@ -103,8 +137,12 @@ module Admin
                 xml = xml.body
                 feeds = Feedjira.parse(xml)
                 feeds.entries.each do |feed|
-                    News.create(title: feed.title, summary: feed.summary.strip, 
-                    published_on: feed.published, url: feed.url,rss_provider_id: rss_provider.id, category_id: rss_provider.category.id, provider_id: rss_provider.provider.id)
+                    title = News.find_by(title: feed.title)
+                    unless title.present?
+                        News.create(title: feed.title, summary: feed.summary.strip, 
+                        published_on: feed.published, url: feed.url,rss_provider_id: rss_provider.id, category_id: rss_provider.category.id, 
+                        provider_id: rss_provider.provider.id, media_credit: rss_provider.provider.provider_name)
+                    end
 
                 end
                 rss_provider.update(news_updated_at: Time.now.localtime)
@@ -115,13 +153,16 @@ module Admin
                 xml = xml.body
                 feeds = Feedjira.parse(xml)
                 feeds.entries.each do |feed|
-                    News.create(title: feed.title, summary: feed.summary.strip, 
-                    published_on: feed.published, url: feed.url,rss_provider_id: rss_provider.id, category_id: rss_provider.category.id, provider_id: rss_provider.provider.id)
+                    title = News.find_by(title: feed.title)
+                    unless title.present?
+                        News.create(title: feed.title, summary: feed.summary.strip, 
+                        published_on: feed.published, url: feed.url,rss_provider_id: rss_provider.id, category_id: rss_provider.category.id, 
+                        provider_id: rss_provider.provider.id, media_credit: rss_provider.provider.provider_name)
+                    end
 
                 end
                 rss_provider.update(news_updated_at: Time.now.localtime)
             end
-            redirect_to admin_rss_providers_path, alert: "Fetched Successfully "
 
         end
 
@@ -135,14 +176,18 @@ module Admin
             xml = xml.body
             feeds = Feedjira.parse(xml)
             feeds.entries.each do |feed|
-                News.create(title: feed.title, summary: feed.summary.strip, 
-                published_on: feed.published, url: feed.url,rss_provider_id: rss_provider.id, category_id: rss_provider.category.id, provider_id: rss_provider.provider.id)
+                title = News.find_by(title: feed.title)
+                unless title.present?
+                    News.create(title: feed.title, summary: feed.summary.strip, 
+                    published_on: feed.published, url: feed.url,rss_provider_id: rss_provider.id, category_id: rss_provider.category.id, 
+                    provider_id: rss_provider.provider.id, media_credit: rss_provider.provider.provider_name)
+                end
 
             end
             rss_provider.update(news_updated_at: Time.now.localtime)
-            redirect_to admin_rss_providers_path, alert: "Fetched Successfully "
 
         end
+        redirect_to admin_rss_providers_path, alert: "Fetched Successfully "
 
     end
     # Overwrite any of the RESTful controller actions to implement custom behavior

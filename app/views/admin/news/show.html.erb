@@ -47,10 +47,39 @@ as well as a link to its edit page.
     <% end %>
   </dl>
   <% page.attributes.each do |attribute| %>
-    <% if attribute.resource.image_url.present?%>
-      <%= image_tag(attribute.resource.image_url)%>
-      <% break %>
+
+    <% if attribute.resource.media_url.present?%>
+
+      <% if attribute.resource.media_url.include?("jpeg" ) || attribute.resource.media_url.include?("jpg" ) || attribute.resource.media_url.include?("png" )%>
+        <%= image_tag(attribute.resource.media_url)%>
+        <% break %>
+      <% else %>
+
+        <% if attribute.resource.media_url.include?("youtube")%>
+          
+          <% if attribute.resource.media_url.include?("embed") %>
+            <iframe width="560" height="315" src="<%= attribute.resource.media_url%>?controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <% break %>
+          <% else %>
+            <% video_id = attribute.resource.media_url[attribute.resource.media_url.index("=")+1..]
+  %>
+            <iframe width="560" height="315"
+              src="https://www.youtube.com/embed/<%= video_id%>?controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+            </iframe>
+            <% break%>
+          <% end %>
+
+        <% else %>
+
+          <iframe width="560" height="315"
+              src="<%= attribute.resource.media_url%>" allowfullscreen>
+          </iframe>
+          <% break%>
+        <% end %>
+
+      <% end %>
     <% end %>
   <% end %>
 
 </section>
+ <!-- <iframe width="560" height="315" src="?controls=0&amp;start=9" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->

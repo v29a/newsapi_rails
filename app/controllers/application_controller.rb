@@ -1,2 +1,4 @@
-class ApplicationController < ActionController::Base								
+class ApplicationController < ActionController::Base
+	include ActionController::Serialization
+							
 end

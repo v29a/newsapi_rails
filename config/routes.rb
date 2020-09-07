@@ -8,7 +8,11 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: 'users/sessions' }
   namespace :admin do
 
-      resources :news
+      resources :news do
+        member do 
+          delete :destroy_avatar
+        end
+      end
       resources :users
       resources :roles
       resources :categories

@@ -8,7 +8,7 @@
 
 Role.create(role_name: "Super Admin", role_description:"It has the all access like creating/updating and deleting a user and assigning role to any user")
 role_id_sa = Role.find_by(role_name: "Super Admin").id
-User.create(email: "super_admin@gmail.com", password:"123456", role_id: role_id_sa)
+User.create(email: "super_admin@gmail.com", password:"123456", role_id: role_id_sa, creator_user_id: 1)
 
 Role.create(role_name: "Admin", role_description:"It has the all access except creating/updating and deleting a user and assigning role to any user")
 Role.create(role_name: "Publisher", role_description:"It has the access to fetch news from Provider URL and can read, write, delete and update the provider url and news")
@@ -22,3 +22,4 @@ role_id_a = Role.find_by(role_name: "Admin").id
 role_id_p = Role.find_by(role_name: "Publisher").id
 User.create(email: "admin@gmail.com", password:"123456", role_id: role_id_a)
 User.create(email: "publisher@gmail.com", password:"123456", role_id: role_id_p)
+

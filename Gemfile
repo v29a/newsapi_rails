@@ -26,6 +26,13 @@ gem 'jbuilder', '~> 2.7'
 # gem 'image_processing', '~> 1.2'
 gem 'pry'
 gem 'devise'
+gem "paperclip", "~> 6.0.0"
+gem 'aws-sdk-s3', '~> 1'
+gem 'administrate-field-active_storage'
+
+gem "image_processing"
+gem 'dotenv-rails', groups: [:development, :test]
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'sidekiq'
@@ -35,6 +42,7 @@ gem 'simple-rss', '~> 1.3', '>= 1.3.1'
 gem 'httparty'
 gem 'administrate'
 gem 'rack-cors'
+gem 'active_model_serializers'
 gem 'whenever', require: false
 gem 'notifications', '~> 0.6.0'
 group :development, :test do

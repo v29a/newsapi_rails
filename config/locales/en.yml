@@ -36,4 +36,5 @@ en:
     label:
       news:
         provider: "Provider"
+        image_credit: "Image Credit (optional)"
   fetch: "Fetch"

@@ -1,24 +1,19 @@
-class Api::NewsController < Api::ApplicationController
+class Api::NewsController < ActionController::API
+	  include ActionController::Serialization
+
 	def index
 		news = News.all
 		if news.present?
-			render json: news.reverse, status: :ok
+			render json: news.reverse, each_serializer: NewsSerializer, status: :ok
 		else
 			render json: "Try again", status: 404
 		end
 	end
 
 	def category
-		categorised_news = []
-		providers = Provider.where(category: params[:category].capitalize).reverse
-		providers.each do |provider|
-			feeds = News.where(provider_id: provider.id)
-			categorised_news.append(feeds)
-		end
-		if categorised_news.present?
-			render json: categorised_news.flatten.reverse, status: :ok
-		else
-			render json: "Try again with different categories", status: 404
-		end
+		category_id = Category.find_by(category_name: params[:category].capitalize)
+		
+		news = News.where(category_id: category_id)
+		render json: news.reverse, each_serializer: NewsSerializer, status: :ok
 	end
 end

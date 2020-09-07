@@ -42,5 +42,12 @@ module Admin
 
     # See https://administrate-prototype.herokuapp.com/customizing_controller_actions
     # for more information
+
+    def destroy_avatar
+      news = News.find(params[:id])
+      news.media.destroy
+      redirect_to admin_news_url(params[:id])
+    end
+
   end
 end
