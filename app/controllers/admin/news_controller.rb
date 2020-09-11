@@ -1,7 +1,7 @@
 module Admin
   class NewsController < Admin::ApplicationController
       skip_before_action :verify_authenticity_token
-      after_action :change_question, only: [:create]
+      after_action :change_question, only: [:create, :update]
     # Overwrite any of the RESTful controller actions to implement custom behavior
     # For example, you may want to send an email after a foo is updated.
     #
