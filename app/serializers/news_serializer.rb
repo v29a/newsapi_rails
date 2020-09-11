@@ -1,6 +1,6 @@
 class NewsSerializer < ActiveModel::Serializer
   attributes :id, :title, :summary, :published_on, :url, :media, :provider_name, :provider_url,
-  	:category, :media_credit
+  	:category, :media_credit, :question, :question_type
 
   private 
   def media
@@ -21,5 +21,14 @@ class NewsSerializer < ActiveModel::Serializer
 
   def category
   	object.category.category_name
+  end
+
+  def question
+    return object.question.present? ? object.question.question_name : ""
+    
+  end
+
+  def question_type
+    return object.question.present? ? object.question.answer_type : ""    
   end
 end

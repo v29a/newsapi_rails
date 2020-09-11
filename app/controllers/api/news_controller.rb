@@ -1,6 +1,6 @@
 class Api::NewsController < ActionController::API
 	  include ActionController::Serialization
-	  before_action :show_news
+	  before_action :show_news, only: [:show, :show_question, :ans_question, :news_score]
 
 	def index
 		news = News.all
@@ -12,7 +12,7 @@ class Api::NewsController < ActionController::API
 	end
 
 	def show
-		if @news.present?
+		if @news.present?																																																						
 			render json: @news, serializer: NewsSerializer, status: :ok
 		else
 			render json: "Try again", status: 404
