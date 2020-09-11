@@ -1,7 +1,5 @@
 module Admin
-  class NewsController < Admin::ApplicationController
-      skip_before_action :verify_authenticity_token
-      after_action :change_question, only: [:create]
+  class QuestionsController < Admin::ApplicationController
     # Overwrite any of the RESTful controller actions to implement custom behavior
     # For example, you may want to send an email after a foo is updated.
     #
@@ -44,29 +42,5 @@ module Admin
 
     # See https://administrate-prototype.herokuapp.com/customizing_controller_actions
     # for more information
-
-    
-
-    def news_question
-        Question.create!(question_name: params[:question], answer_type: params[:ans_type], news_title: params[:title])
-    end
-
-    def destroy_avatar
-      news = News.find(params[:id])
-      news.media.destroy
-      redirect_to admin_news_url(params[:id])
-    end
-
-    private
-    def change_question
-        news = News.find_by(title: params[:news][:title])
-        question = Question.find_by(news_title: params[:news][:title])
-        if question.present?
-            question.update(news_id: news.id)
-            news.update(news_type: "Poll")
-        end
-
-    end
-
   end
 end

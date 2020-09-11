@@ -34,12 +34,58 @@ and renders all form fields for a resource's editable attributes.
 
   <% page.attributes.each do |attribute| -%>
     <div class="field-unit field-unit--<%= attribute.html_class %> field-unit--<%= requireness(attribute) %>">
-      <%= render_field attribute, f: f %>
+      <%= render_field attribute, f: f , class: attribute%>
+
     </div>
   <% end -%>
 
-  <div class="form-actions" id="notification_news">
+  <div class="form-actions" id = "main_submit">
     <%= f.submit %>
 
   </div>
 <% end %>
+<button id = "add_poll">
+  Add Poll
+</button>
+<button id = "hide_poll" hidden="true">
+  Hide Poll
+</button>
+<div id = "question_form" hidden="true">
+  <%= form_for :question do |f| %>
+  <h4>Polling Question</h4> <%= f.text_field :question_name , id: "question_feild"%><br />
+  <h4>Answer Type</h4><%= f.text_field :answer_type , id: "answer_feild"%><br />
+<% end %>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  $("#add_poll").click(function(){
+  $("#add_poll").hide()
+  $("#question_form").show()
+  $("#hide_poll").show()
+
+});
+</script>
+
+<script>
+  $("#hide_poll").click(function(){
+  $("#add_poll").show()
+  $("#question_form").hide()
+  $("#hide_poll").hide()
+});
+</script>
+
+<script>
+  $("#main_submit").click(function(argument) {
+    var questionData = {
+  'question': $("#question_feild").val(),
+  'ans_type': $("#answer_feild  ").val(),
+  'title': $("#news_title").val(),
+};
+    $.ajax({
+      type: 'POST',
+      url: '<%= news_question_admin_news_index_path %>',
+      data: questionData,
+      success: function(resultData) { alert("Save Complete") }
+});
+  });
+</script>

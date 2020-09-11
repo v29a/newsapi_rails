@@ -34,7 +34,9 @@ en:
   hello: "Hello world"
   helpers:
     label:
+      question:
+        question_name: "Question"
       news:
-        provider: "Provider"
-        image_credit: "Image Credit (optional)"
+        provider: "Provider"                
+        media_credit: "Media Credit (optional)"
   fetch: "Fetch"

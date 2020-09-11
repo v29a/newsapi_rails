@@ -7,6 +7,8 @@ class CreateNews < ActiveRecord::Migration[6.0]
       t.string :url
       t.string :media_url
       t.string :media_credit
+      t.string :news_type
+      t.string :question
 
 
       t.timestamps

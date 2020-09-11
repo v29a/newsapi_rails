@@ -12,11 +12,15 @@ Rails.application.routes.draw do
         member do 
           delete :destroy_avatar
         end
+        collection do 
+          post 'news_question'
+        end
       end
       resources :users
       resources :roles
       resources :categories
       resources :providers
+      resources :questions
       
       resources :rss_providers do
       collection do
@@ -32,6 +36,11 @@ Rails.application.routes.draw do
   		collection do
   			post 'category'
   		end
+      member do 
+        post 'ans_question'
+        get 'show_question'
+        get 'news_score'
+      end
   	end
   	
   end

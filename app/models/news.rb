@@ -5,6 +5,8 @@ class News < ApplicationRecord
 	belongs_to :user, optional: true
 	belongs_to :category
 	belongs_to :rss_provider, optional: true
+	has_one :question
+	has_many :answer, through: :question
 	has_one_attached :media
 
 	before_save :check_media

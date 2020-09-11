@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class NewsDashboard < Administrate::BaseDashboard
+class QuestionDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -8,27 +8,14 @@ class NewsDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    provider: Field::BelongsTo,
-    user: Field::BelongsTo,
-    category: Field::BelongsTo,
-    rss_provider: Field::BelongsTo,
-    # question: Field::HasOne,
-    media: Field::ActiveStorage.with_options(
-      destroy_url: proc do |namespace, resource, attachment|
-        [:destroy_avatar_admin_news, { attachment_id: attachment.id }]
-      end
-      ),
+    news: Field::BelongsTo.with_options(
+        searchable: true,
+        searchable_fields: ['title']),
     id: Field::Number,
-    summary: Field::String,
-    media_url: Field::String,
-    media_credit: Field::String,
-    published_on: Field::DateTime,
-    title: Field::String,
-    url: Field::String,
-    question: Field::String,
+    question_name: Field::String,
+    answer_type: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    news_type: Field::String,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -37,25 +24,18 @@ class NewsDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-    id
-    title
-    provider
-    category
+  id
+  question_name
+  news
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
   id
-  provider
-  category
-  summary
-  published_on
-  title
-  url
-  media
-  media_url
-  media_credit                                            
+  question_name
+  answer_type
+  news
   created_at
   updated_at
   ].freeze
@@ -64,14 +44,9 @@ class NewsDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-  title
-  category
-  provider
-  summary
-  url
-  media
-  media_url
-  media_credit
+  news
+  question_name
+  answer_type
   ].freeze
 
   # COLLECTION_FILTERS
@@ -86,10 +61,10 @@ class NewsDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how news are displayed
+  # Overwrite this method to customize how questions are displayed
   # across all pages of the admin dashboard.
   #
-  def display_resource(news)
-    "#{news.title}"
-  end
+  # def display_resource(question)
+  #   "Question ##{question.id}"
+  # end
 end
