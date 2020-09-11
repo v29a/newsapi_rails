@@ -31,14 +31,19 @@ class Api::NewsController < ActionController::API
 	end
 
 	def ans_question
-		Answer.create(answer_name: params[:answer], question_id: @news.question.id)
+		Answer.create(answer_name: params[:answer].downcase, question_id: @news.question.id)
 		render json: {message:"Answer Submitted", status: :ok}
 	end
 
 	def news_score
 		total = @news.question.answers.size
-		yes = (@news.question.answers.where(answer_name: "yes").size*100)/total
-		no = (@news.question.answers.where(answer_name: "no").size*100)/total
+		if @news.question.answer_type.downcase.include?("yes") 
+			yes = (@news.question.answers.where(answer_name: "yes" ).size*100)/total
+			no = (@news.question.answers.where(answer_name: "no").size*100)/total
+		elsif @news.question.answer_type.downcase.include?("true")
+			yes = (@news.question.answers.where(answer_name: "true" ).size*100)/total
+			no = (@news.question.answers.where(answer_name: "false").size*100)/total
+		end
 		render json: {yes: yes, no: no, status: :ok}
 
 	end
